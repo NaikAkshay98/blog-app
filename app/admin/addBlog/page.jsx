@@ -23,31 +23,37 @@ const Page = () => {
         console.log(data);
     }
 
-    const onSubmitHandler = async (e) =>{
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('title',data.title);
-        formData.append('description',data.description);
-        formData.append('category',data.category);
-        formData.append('author',data.author);
-        formData.append('authorImg',data.authorImg);
-        formData.append('image',image);
-        const response = await axios.post('/api/blog',formData);
-        if (response.data.success) {
-            toast.success(response.data.msg);
-            setImage(false);
-            setData({
-              title:"",
-              description:"",
-              category:"Startup",
-              author:"Alex Bennett",
-              authorImg:"/author_img.png"
-            });
-        }
-        else{
-            toast.error("Error");
-        }
-    }
+    const onSubmitHandler = async (e) => {
+      e.preventDefault();
+      try {
+          const formData = new FormData();
+          formData.append('title', data.title);
+          formData.append('description', data.description);
+          formData.append('category', data.category);
+          formData.append('author', data.author);
+          formData.append('authorImg', data.authorImg);
+          formData.append('image', image);
+  
+          const response = await axios.post('/api/blog', formData);
+          if (response.data.success) {
+              toast.success(response.data.msg);
+              setImage(false);
+              setData({
+                  title: "",
+                  description: "",
+                  category: "Startup",
+                  author: "Alex Bennett",
+                  authorImg: "/author_img.png"
+              });
+          } else {
+              toast.error("An error occurred while adding the blog");
+          }
+      } catch (error) {
+          console.error(error); // Log detailed error info
+          toast.error("Request failed: " + error.message);
+      }
+  };
+  
 
   return (
     <>
